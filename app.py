@@ -1,7 +1,9 @@
+import socket
 import os
 
 from flask import request, redirect, Flask, send_file
 from pathlib import Path
+import qrcode
 
 app = Flask(__name__)
 root = Path.cwd() / "__files__"
@@ -73,4 +75,12 @@ def get_available_files_html():
 
 
 if __name__ == "__main__":
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+        s.connect(("8.8.8.8", 80))
+        hostaddr = s.getsockname()[0]
+
+    qr = qrcode.QRCode()
+    qr.add_data(f"http://{hostaddr}:8080")
+    qr.print_ascii()
+
     app.run(host="0.0.0.0", debug=True, port=8080)
