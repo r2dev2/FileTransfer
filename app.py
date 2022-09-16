@@ -1,9 +1,9 @@
-import socket
 import os
-
-from flask import request, redirect, Flask, send_file
+import socket
 from pathlib import Path
+
 import qrcode
+from flask import Flask, redirect, request, send_file
 
 app = Flask(__name__)
 root = Path.cwd() / "__files__"
@@ -18,6 +18,7 @@ form {
 }
 """
 
+
 @app.route("/upload/<path:name>", methods=["POST"])
 def upload_file(name):
     if "main.py" in name:
@@ -27,6 +28,7 @@ def upload_file(name):
             fout.write(line)
 
     return "Success"
+
 
 @app.route("/file", methods=["POST"])
 def file():
@@ -68,9 +70,8 @@ def index():
 
 
 def get_available_files_html():
-    return ''.join(
-        f"<li><a href='/files/{file}'>{file}</a></li>"
-        for file in os.listdir(str(root))
+    return "".join(
+        f"<li><a href='/files/{file}'>{file}</a></li>" for file in os.listdir(str(root))
     )
 
 
